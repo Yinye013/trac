@@ -1,0 +1,14 @@
+{
+  "name": "job-tracker",
+  "version": "0.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev:api": "pnpm --filter @job-tracker/api dev",
+    "dev:web": "pnpm --filter @job-tracker/web dev",
+    "build": "pnpm -r build",
+    "build:shared": "pnpm --filter @job-tracker/shared build"
+  }
+}
