@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Eligibility {
+  WORLDWIDE
+  RELOCATION_SPONSORED
+  REGION_LIMITED
+  RESTRICTED
+  UNCLEAR
+}
+
+enum Region {
+  USA
+  CANADA
+  UK
+  GERMANY
+  NETHERLANDS
+  IRELAND
+  PORTUGAL
+  SPAIN
+  FRANCE
+  SWITZERLAND
+  EU_OTHER
+  GULF
+  ASIA_PACIFIC
+  OTHER
+  UNCLEAR
+}
+
+enum Status {
+  SAVED
+  APPLIED
+  INTERVIEW
+  OFFER
+  REJECTED
+  WITHDRAWN
+}
+
+model Job {
+  id           String        @id @default(cuid())
+  source       String
+  sourceId     String
+  title        String
+  company      String
+  companyLogo  String?
+  url          String
+  description  String        @db.Text
+  tags         String[]
+  jobTypes     String[]
+  locationRaw  String?
+  eligibility  Eligibility   @default(UNCLEAR)
+  region       Region        @default(UNCLEAR)
+  salary       String?
+  postedAt     DateTime
+  fetchedAt    DateTime      @default(now())
+  applications Application[]
+
+  @@unique([source, sourceId])
+  @@index([postedAt])
+  @@index([eligibility])
+  @@index([region])
+}
+
+model Application {
+  id            String    @id @default(cuid())
+  jobId         String?
+  job           Job?      @relation(fields: [jobId], references: [id])
+  title         String
+  company       String
+  url           String?
+  status        Status    @default(SAVED)
+  appliedAt     DateTime?
+  followUpAt    DateTime?
+  resumeVersion String?
+  notes         String?   @db.Text
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
