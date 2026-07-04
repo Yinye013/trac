@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "printf '%s\\n' '{\"systemMessage\": \"Session ending: checking for memory-worthy content.\", \"hookSpecificOutput\": {\"hookEventName\": \"Stop\", \"additionalContext\": \"Before finishing, review this session for memory-worthy content per the memory system instructions: new project facts/decisions, user preferences, or feedback that confirmed/corrected an approach. If anything qualifies, write it to the memory directory now. If nothing qualifies, do not write anything and do not mention this check to the user.\"}}'"
+          }
+        ]
+      }
+    ]
+  }
+}
