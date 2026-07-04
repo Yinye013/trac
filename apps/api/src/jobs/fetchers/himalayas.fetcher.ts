@@ -52,14 +52,18 @@ export async function fetchHimalayasJobs(): Promise<RawJob[]> {
       await delay(REQUEST_DELAY_MS);
     }
 
-    const res = await fetch(`${HIMALAYAS_API_URL}?limit=${PAGE_SIZE}&offset=${offset}`);
+    const res = await fetch(
+      `${HIMALAYAS_API_URL}?limit=${PAGE_SIZE}&offset=${offset}`,
+    );
     if (!res.ok) {
       if (page === 0) {
         throw new Error(`Himalayas API responded with ${res.status}`);
       }
       // Already have partial results from earlier pages — log and stop
       // rather than discarding what we successfully fetched.
-      logger.warn(`Himalayas API responded with ${res.status} after ${page} pages, stopping early`);
+      logger.warn(
+        `Himalayas API responded with ${res.status} after ${page} pages, stopping early`,
+      );
       break;
     }
     const data = (await res.json()) as HimalayasResponse;
@@ -84,7 +88,9 @@ export async function fetchHimalayasJobs(): Promise<RawJob[]> {
     offset += PAGE_SIZE;
   }
 
-  logger.debug(`Fetched ${results.length} jobs within the last ${MAX_AGE_DAYS} days`);
+  logger.debug(
+    `Fetched ${results.length} jobs within the last ${MAX_AGE_DAYS} days`,
+  );
   return results;
 }
 
@@ -99,7 +105,9 @@ function mapHimalayasJob(job: HimalayasJob, postedAt: Date): RawJob {
     description: job.description,
     tags: job.categories ?? [],
     jobTypes: job.employmentType ? [job.employmentType] : [],
-    locationRaw: job.locationRestrictions?.length ? job.locationRestrictions.join(', ') : null,
+    locationRaw: job.locationRestrictions?.length
+      ? job.locationRestrictions.join(', ')
+      : null,
     salary: null,
     postedAt,
   };

@@ -13,7 +13,11 @@ export interface PaginatedResponse<T> {
 
 export function paginate<T>(
   data: T[],
-  { page, limit, totalItems }: { page: number; limit: number; totalItems: number },
+  {
+    page,
+    limit,
+    totalItems,
+  }: { page: number; limit: number; totalItems: number },
 ): PaginatedResponse<T> {
   return {
     success: true,

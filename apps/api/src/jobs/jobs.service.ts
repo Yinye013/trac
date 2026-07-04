@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { NEON_BATCH_TRANSACTION_OPTIONS } from '../common/prisma-transaction-options';
 import { PrismaService } from '../prisma/prisma.service';
 import { fetchArbeitnowJobs } from './fetchers/arbeitnow.fetcher';
 import { fetchHimalayasJobs } from './fetchers/himalayas.fetcher';
@@ -87,13 +88,7 @@ export class JobsService {
 
     for (let i = 0; i < upsertOps.length; i += UPSERT_BATCH_SIZE) {
       const batch = upsertOps.slice(i, i + UPSERT_BATCH_SIZE);
-      // See jobs.controller.ts for why maxWait is bumped above Prisma's
-      // default — Neon's pooled connection can be slow to hand back a
-      // connection to start the transaction on.
-      await this.prisma.$transaction(batch, {
-        maxWait: 10_000,
-        timeout: 20_000,
-      });
+      await this.prisma.$transaction(batch, NEON_BATCH_TRANSACTION_OPTIONS);
     }
 
     const duplicatesSkipped = matched.filter((job) =>

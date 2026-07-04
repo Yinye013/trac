@@ -154,22 +154,34 @@ export function resolveEligibility(job: RawJob): EligibilityResult {
     .join(' ')
     .toLowerCase();
 
-  const hardRestrictedMatch = findMatchedKeyword(combined, HARD_RESTRICTED_KEYWORDS);
+  const hardRestrictedMatch = findMatchedKeyword(
+    combined,
+    HARD_RESTRICTED_KEYWORDS,
+  );
   if (hardRestrictedMatch) {
     const sentence = extractSurroundingSentence(combined, hardRestrictedMatch);
-    return { eligibility: Eligibility.RESTRICTED, region: extractRegion(sentence) };
+    return {
+      eligibility: Eligibility.RESTRICTED,
+      region: extractRegion(sentence),
+    };
   }
 
   const restrictiveMatch = findMatchedKeyword(combined, RESTRICTIVE_KEYWORDS);
   if (restrictiveMatch) {
     const sentence = extractSurroundingSentence(combined, restrictiveMatch);
-    return { eligibility: Eligibility.REGION_LIMITED, region: extractRegion(sentence) };
+    return {
+      eligibility: Eligibility.REGION_LIMITED,
+      region: extractRegion(sentence),
+    };
   }
 
   const relocationMatch = findMatchedKeyword(combined, RELOCATION_KEYWORDS);
   if (relocationMatch) {
     const sentence = extractSurroundingSentence(combined, relocationMatch);
-    return { eligibility: Eligibility.RELOCATION_SPONSORED, region: extractRegion(sentence) };
+    return {
+      eligibility: Eligibility.RELOCATION_SPONSORED,
+      region: extractRegion(sentence),
+    };
   }
 
   const worldwideMatch = findMatchedKeyword(combined, WORLDWIDE_KEYWORDS);
@@ -178,7 +190,10 @@ export function resolveEligibility(job: RawJob): EligibilityResult {
     // HQ/origin (if present at all) is company metadata, not something tied
     // to the sentence the worldwide keyword appears in, so we look at the
     // whole combined text instead.
-    return { eligibility: Eligibility.WORLDWIDE, region: extractRegion(combined) };
+    return {
+      eligibility: Eligibility.WORLDWIDE,
+      region: extractRegion(combined),
+    };
   }
 
   return { eligibility: Eligibility.UNCLEAR, region: Region.UNCLEAR };

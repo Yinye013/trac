@@ -1,8 +1,11 @@
-import { Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
+import { ApplicationsService } from '../applications/applications.service';
 import { Prisma } from '../generated/prisma/client';
 import { paginate } from '../common/dto/paginated-response.dto';
+import { NEON_TRANSACTION_OPTIONS } from '../common/prisma-transaction-options';
 import { PrismaService } from '../prisma/prisma.service';
+import { ApplyToJobDto } from './dto/apply-to-job.dto';
 import { JobsQueryDto } from './dto/jobs-query.dto';
 import { JobsService } from './jobs.service';
 
@@ -11,6 +14,7 @@ export class JobsController {
   constructor(
     private readonly jobsService: JobsService,
     private readonly prisma: PrismaService,
+    private readonly applicationsService: ApplicationsService,
   ) {}
 
   @Get()
@@ -50,10 +54,7 @@ export class JobsController {
           Array<{ count: bigint }>
         >`SELECT COUNT(*) as count FROM "Job" WHERE ${whereClause}`,
       ],
-      // Neon's pooled connection occasionally takes longer than Prisma's
-      // 2s default `maxWait` to hand back a connection for the transaction
-      // to start on — bump both well above what we've seen in practice.
-      { maxWait: 10_000, timeout: 10_000 },
+      NEON_TRANSACTION_OPTIONS,
     );
 
     const totalItems = Number(totalItemsResult[0]?.count ?? 0);
@@ -66,5 +67,10 @@ export class JobsController {
   async refresh() {
     const summary = await this.jobsService.ingestJobs();
     return { success: true, data: summary };
+  }
+
+  @Post(':id/apply')
+  applyToJob(@Param('id') id: string, @Body() dto: ApplyToJobDto) {
+    return this.applicationsService.createFromJob(id, dto);
   }
 }

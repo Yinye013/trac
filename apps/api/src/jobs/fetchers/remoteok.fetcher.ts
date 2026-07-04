@@ -31,7 +31,9 @@ export async function fetchRemoteOkJobs(): Promise<RawJob[]> {
   }
   const data = (await res.json()) as RemoteOkEntry[];
 
-  return data.filter((entry): entry is RemoteOkJob => 'id' in entry).map(mapRemoteOkJob);
+  return data
+    .filter((entry): entry is RemoteOkJob => 'id' in entry)
+    .map(mapRemoteOkJob);
 }
 
 function mapRemoteOkJob(job: RemoteOkJob): RawJob {

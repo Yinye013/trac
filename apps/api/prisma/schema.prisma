@@ -85,4 +85,7 @@ model Application {
   notes         String?   @db.Text
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+
+  @@index([status])
+  @@index([followUpAt])
 }

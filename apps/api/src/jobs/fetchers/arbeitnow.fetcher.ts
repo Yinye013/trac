@@ -63,7 +63,9 @@ export async function fetchArbeitnowJobs(): Promise<RawJob[]> {
     page += 1;
   }
 
-  logger.debug(`Fetched ${results.length} jobs within the last ${MAX_AGE_DAYS} days`);
+  logger.debug(
+    `Fetched ${results.length} jobs within the last ${MAX_AGE_DAYS} days`,
+  );
   return results;
 }
 
