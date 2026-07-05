@@ -1,26 +1,99 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: var(--font-satoshi), ui-sans-serif, system-ui, sans-serif;
+
+  /* Primary accent: indigo, full 50-950 scale */
+  --color-primary-50: #eef2ff;
+  --color-primary-100: #e0e7ff;
+  --color-primary-200: #c7d2fe;
+  --color-primary-300: #a5b4fc;
+  --color-primary-400: #818cf8;
+  --color-primary-500: #6366f1;
+  --color-primary-600: #4f46e5;
+  --color-primary-700: #4338ca;
+  --color-primary-800: #3730a3;
+  --color-primary-900: #312e81;
+  --color-primary-950: #1e1b4b;
+
+  /* Application status badges */
+  --color-status-saved: #6b7280;
+  --color-status-saved-bg: #f3f4f6;
+  --color-status-applied: #4f46e5;
+  --color-status-applied-bg: #e0e7ff;
+  --color-status-interview: #b45309;
+  --color-status-interview-bg: #fef3c7;
+  --color-status-offer: #15803d;
+  --color-status-offer-bg: #dcfce7;
+  --color-status-rejected: #be123c;
+  --color-status-rejected-bg: #ffe4e6;
+  --color-status-withdrawn: #6b7280;
+  --color-status-withdrawn-bg: #f3f4f6;
+
+  /* Job eligibility badges — deliberately separate palette from status */
+  --color-eligibility-worldwide: #0f766e;
+  --color-eligibility-worldwide-bg: #ccfbf1;
+  --color-eligibility-relocation: #6d28d9;
+  --color-eligibility-relocation-bg: #ede9fe;
+  --color-eligibility-region-limited: #b45309;
+  --color-eligibility-region-limited-bg: #fef3c7;
+  --color-eligibility-restricted: #be123c;
+  --color-eligibility-restricted-bg: #ffe4e6;
+  --color-eligibility-unclear: #6b7280;
+  --color-eligibility-unclear-bg: #f3f4f6;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --surface: #f9fafb;
+  --border: #e5e7eb;
+}
+
+.dark {
+  --background: #0a0e1a;
+  --foreground: #e5e7eb;
+  --surface: #10152a;
+  --border: #1f2740;
+
+  /* Badge tones get flipped to darker fills / lighter text so contrast holds
+     against the blue-black background instead of reusing light-mode pastels. */
+  --color-status-saved: #9ca3af;
+  --color-status-saved-bg: #1f2937;
+  --color-status-applied: #a5b4fc;
+  --color-status-applied-bg: #312e81;
+  --color-status-interview: #fbbf24;
+  --color-status-interview-bg: #451a03;
+  --color-status-offer: #4ade80;
+  --color-status-offer-bg: #052e16;
+  --color-status-rejected: #fb7185;
+  --color-status-rejected-bg: #4c0519;
+  --color-status-withdrawn: #6b7280;
+  --color-status-withdrawn-bg: #1f2937;
+
+  --color-eligibility-worldwide: #2dd4bf;
+  --color-eligibility-worldwide-bg: #042f2e;
+  --color-eligibility-relocation: #c4b5fd;
+  --color-eligibility-relocation-bg: #2e1065;
+  --color-eligibility-region-limited: #fbbf24;
+  --color-eligibility-region-limited-bg: #451a03;
+  --color-eligibility-restricted: #fb7185;
+  --color-eligibility-restricted-bg: #4c0519;
+  --color-eligibility-unclear: #9ca3af;
+  --color-eligibility-unclear-bg: #1f2937;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-surface: var(--surface);
+  --color-border: var(--border);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
 }
