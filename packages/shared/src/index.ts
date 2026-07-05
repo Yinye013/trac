@@ -70,3 +70,13 @@ export interface Application {
   createdAt: string;
   updatedAt: string;
 }
+
+/**
+ * The shape `GET /applications/:id` returns specifically — it includes the
+ * linked `Job` (via Prisma's `include: { job: true }`), unlike the plain
+ * `Application` returned by list/create/update endpoints. `job` is `null`
+ * for applications logged manually with no linked aggregator job.
+ */
+export interface ApplicationWithJob extends Application {
+  job: Job | null;
+}

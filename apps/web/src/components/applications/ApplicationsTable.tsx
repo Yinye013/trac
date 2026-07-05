@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Fragment, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Application, ApplicationStatus } from "@job-tracker/shared";
@@ -110,6 +111,13 @@ export function ApplicationsTable({
                             </span>{" "}
                             {application.notes ?? "—"}
                           </p>
+                          <Link
+                            href={`/applications/${application.id}`}
+                            onClick={(event) => event.stopPropagation()}
+                            className="cursor-pointer font-semibold text-primary-600 hover:underline"
+                          >
+                            View full details →
+                          </Link>
                         </div>
                       </motion.div>
                     )}

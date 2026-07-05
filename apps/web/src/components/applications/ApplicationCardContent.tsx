@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Application, ApplicationStatus } from "@job-tracker/shared";
 import { formatRelativeTime } from "@/lib/FormatRelativeTime";
 import { FollowUpFlag } from "./FollowUpFlag";
@@ -29,14 +30,18 @@ export function ApplicationCardContent({
       }`}
     >
       <div className="flex items-start justify-between gap-2">
-        <div className="min-w-0">
-          <h3 className="truncate text-sm font-bold text-foreground">
+        <Link
+          href={`/applications/${application.id}`}
+          onPointerDown={(event) => event.stopPropagation()}
+          className="min-w-0 cursor-pointer"
+        >
+          <h3 className="truncate text-sm font-bold text-foreground hover:text-primary-600">
             {application.title}
           </h3>
           <p className="truncate text-xs font-medium text-foreground/60">
             {application.company}
           </p>
-        </div>
+        </Link>
         <div onPointerDown={(event) => event.stopPropagation()}>
           <StatusMenu
             currentStatus={application.status}
