@@ -22,11 +22,18 @@ export class ApplicationsController {
     return this.applicationsService.findAll(query);
   }
 
-  // Registered before GET /applications/:id so "due-followup" is matched
-  // as this literal route rather than swallowed as an :id path param.
+  // Registered before GET /applications/:id so "due-followup" and "stats"
+  // are matched as these literal routes rather than swallowed as :id path
+  // params.
   @Get('due-followup')
   findDueFollowUps() {
     return this.applicationsService.findDueFollowUps();
+  }
+
+  @Get('stats')
+  async getStats() {
+    const data = await this.applicationsService.getStatusCounts();
+    return { success: true, data };
   }
 
   @Get(':id')

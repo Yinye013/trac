@@ -168,6 +168,32 @@ export class ApplicationsService {
   }
 
   /**
+   * Counts every Application per status in one query via Prisma's `groupBy`
+   * — the SQL equivalent of `SELECT status, COUNT(*) FROM "Application"
+   * GROUP BY status`. `groupBy` only returns a row for a status that has at
+   * least one Application, so a status with zero applications (e.g. no one
+   * has WITHDRAWN anything yet) is simply absent from the result — every
+   * `Status` enum value is seeded to 0 first so the response always has all
+   * six keys, and the frontend never has to guard against a missing key.
+   */
+  async getStatusCounts(): Promise<Record<Status, number>> {
+    const counts = await this.prisma.application.groupBy({
+      by: ['status'],
+      _count: true,
+    });
+
+    const result = Object.fromEntries(
+      Object.values(Status).map((status) => [status, 0]),
+    ) as Record<Status, number>;
+
+    for (const row of counts) {
+      result[row.status] = row._count;
+    }
+
+    return result;
+  }
+
+  /**
    * If status is being set to APPLIED and this request didn't itself supply
    * appliedAt, auto-set it to now. An explicit appliedAt in the request is
    * never overwritten, and this only looks at the current request's fields —
