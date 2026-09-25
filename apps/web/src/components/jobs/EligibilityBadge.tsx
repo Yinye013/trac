@@ -23,8 +23,9 @@ export function EligibilityBadge({
 }: Readonly<{ eligibility: Eligibility }>) {
   return (
     <span
-      className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${ELIGIBILITY_STYLES[eligibility]}`}
+      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset ring-current/15 ${ELIGIBILITY_STYLES[eligibility]}`}
     >
+      <span className="h-1.5 w-1.5 rounded-full bg-current" aria-hidden />
       {ELIGIBILITY_LABELS[eligibility]}
     </span>
   );

@@ -11,7 +11,7 @@ export function BottomTabBar() {
   return (
     <nav
       aria-label="Main"
-      className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-around border-t border-border bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-sm md:hidden"
+      className="glass-panel fixed inset-x-0 bottom-0 z-40 flex items-center justify-around border-x-0 border-b-0 pb-[env(safe-area-inset-bottom)] md:hidden"
     >
       {NAV_LINKS.map((link) => {
         const isActive =
@@ -23,18 +23,24 @@ export function BottomTabBar() {
             key={link.href}
             href={link.href}
             aria-current={isActive ? "page" : undefined}
-            className={`flex flex-1 flex-col items-center gap-0.5 py-2 text-[11px] font-medium transition-colors ${
+            className={`flex flex-1 flex-col items-center gap-1 py-2.5 text-xs font-semibold transition-colors ${
               isActive
-                ? "text-primary-600"
+                ? "text-primary-600 dark:text-primary-300"
                 : "text-foreground/60 hover:text-foreground"
             }`}
           >
-            <Icon className="h-5 w-5" />
+            <span
+              className={`flex h-9 w-9 items-center justify-center rounded-xl transition-colors ${
+                isActive ? "bg-gradient-accent-soft" : ""
+              }`}
+            >
+              <Icon className="h-5.5 w-5.5" />
+            </span>
             {link.label}
           </Link>
         );
       })}
-      <div className="flex flex-1 flex-col items-center gap-0.5 py-1">
+      <div className="flex flex-1 flex-col items-center gap-1 py-2.5">
         <ThemeToggle />
       </div>
     </nav>

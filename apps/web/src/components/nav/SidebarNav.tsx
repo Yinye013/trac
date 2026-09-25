@@ -12,9 +12,12 @@ export function SidebarNav() {
   const reducedMotion = useReducedMotion();
 
   return (
-    <aside className="hidden h-dvh w-56 shrink-0 flex-col border-r border-border bg-surface md:flex">
-      <div className="flex h-14 items-center gap-2 px-4">
-        <span className="text-lg font-black tracking-tight text-primary-600">
+    <aside className="glass-panel hidden h-dvh w-60 shrink-0 flex-col border-y-0 border-l-0 md:flex">
+      <div className="flex h-16 items-center gap-2.5 px-5">
+        <span className="bg-gradient-accent glow-primary flex h-8 w-8 items-center justify-center rounded-xl text-sm font-black text-white">
+          jt
+        </span>
+        <span className="text-gradient text-lg font-black tracking-tight">
           job-tracker
         </span>
       </div>
@@ -37,13 +40,16 @@ export function SidebarNav() {
               <Link
                 href={link.href}
                 aria-current={isActive ? "page" : undefined}
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                className={`group relative flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-semibold transition-colors ${
                   isActive
-                    ? "bg-primary-600/10 text-primary-600"
+                    ? "bg-gradient-accent-soft text-primary-600 dark:text-primary-300"
                     : "text-foreground/70 hover:bg-primary-600/5 hover:text-foreground"
                 }`}
               >
-                <Icon className="h-4.5 w-4.5" />
+                {isActive && (
+                  <span className="bg-gradient-accent absolute inset-y-1.5 left-0 w-1 rounded-full" aria-hidden />
+                )}
+                <Icon className="h-5 w-5" />
                 {link.label}
               </Link>
             </motion.div>
@@ -51,8 +57,8 @@ export function SidebarNav() {
         })}
       </nav>
 
-      <div className="flex items-center justify-between border-t border-border px-4 py-3">
-        <span className="text-xs font-medium text-foreground/50">Theme</span>
+      <div className="flex items-center justify-between border-t border-border/60 px-5 py-3.5">
+        <span className="text-sm font-medium text-foreground/50">Theme</span>
         <ThemeToggle />
       </div>
     </aside>

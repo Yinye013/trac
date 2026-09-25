@@ -8,10 +8,28 @@ import { TagList } from "./TagList";
 interface JobCardProps {
   job: Job;
   onExpand: () => void;
-  onApply: () => void;
+  /**
+   * Optional so the compact dashboard variant can render a card that only
+   * opens the detail slide-over, without an Apply button. When omitted, the
+   * Apply CTA is not rendered at all.
+   */
+  onApply?: () => void;
+  /**
+   * "compact" is the dashboard "recently added" variant: tighter spacing,
+   * smaller type, and tags/salary/Apply trimmed so several fit in a dense
+   * widget. Same component (per DRY) — only presentation differs.
+   */
+  variant?: "default" | "compact";
 }
 
-export function JobCard({ job, onExpand, onApply }: Readonly<JobCardProps>) {
+export function JobCard({
+  job,
+  onExpand,
+  onApply,
+  variant = "default",
+}: Readonly<JobCardProps>) {
+  const compact = variant === "compact";
+
   return (
     <div
       role="button"
@@ -23,15 +41,31 @@ export function JobCard({ job, onExpand, onApply }: Readonly<JobCardProps>) {
           onExpand();
         }
       }}
-      className="flex cursor-pointer flex-col gap-2.5 rounded-xl border border-border bg-background p-3.5 text-left transition-colors hover:border-primary-600/40 hover:bg-surface"
+      className={
+        compact
+          ? "card-modern flex cursor-pointer flex-col gap-2 rounded-xl p-3 text-left"
+          : "card-modern flex cursor-pointer flex-col gap-3 rounded-2xl p-4 text-left"
+      }
     >
       <div className="flex items-start gap-3">
         <CompanyLogo src={job.companyLogo} company={job.company} />
         <div className="min-w-0 flex-1">
-          <h3 className="truncate text-sm font-bold text-foreground">
+          <h3
+            className={
+              compact
+                ? "truncate text-sm font-bold text-foreground"
+                : "truncate text-base font-bold text-foreground"
+            }
+          >
             {job.title}
           </h3>
-          <p className="truncate text-xs font-medium text-foreground/60">
+          <p
+            className={
+              compact
+                ? "truncate text-xs font-medium text-foreground/60"
+                : "truncate text-sm font-medium text-foreground/60"
+            }
+          >
             {job.company}
           </p>
         </div>
@@ -44,28 +78,30 @@ export function JobCard({ job, onExpand, onApply }: Readonly<JobCardProps>) {
         </span>
       </div>
 
-      {job.salary && (
-        <p className="text-xs font-semibold text-foreground/80">
+      {!compact && job.salary && (
+        <p className="text-sm font-semibold text-foreground/80">
           {job.salary}
         </p>
       )}
 
-      <TagList tags={job.tags} />
+      {!compact && <TagList tags={job.tags} />}
 
       <div className="mt-1 flex items-center justify-between">
-        <span className="text-[11px] text-foreground/45">
+        <span className="text-xs text-foreground/45">
           {formatRelativeTime(job.postedAt)}
         </span>
-        <button
-          type="button"
-          onClick={(event) => {
-            event.stopPropagation();
-            onApply();
-          }}
-          className="cursor-pointer rounded-lg bg-primary-600 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-primary-700"
-        >
-          Apply
-        </button>
+        {onApply && (
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation();
+              onApply();
+            }}
+            className="bg-gradient-accent glow-primary cursor-pointer rounded-xl px-4 py-2 text-sm font-semibold text-white transition-transform hover:scale-[1.03] active:scale-95 motion-reduce:transition-none motion-reduce:hover:scale-100"
+          >
+            Apply
+          </button>
+        )}
       </div>
     </div>
   );

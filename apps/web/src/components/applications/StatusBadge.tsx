@@ -32,8 +32,9 @@ export function StatusBadge({
 }: Readonly<{ status: ApplicationStatus }>) {
   return (
     <span
-      className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_STYLES[status]}`}
+      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset ring-current/15 ${STATUS_STYLES[status]}`}
     >
+      <span className="h-1.5 w-1.5 rounded-full bg-current" aria-hidden />
       {STATUS_LABELS[status]}
     </span>
   );

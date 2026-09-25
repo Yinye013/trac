@@ -25,8 +25,8 @@ export function ApplicationCardContent({
 }: Readonly<ApplicationCardContentProps>) {
   return (
     <div
-      className={`flex cursor-pointer flex-col gap-2 rounded-xl border border-border bg-background p-3 shadow-sm transition-shadow ${
-        isDragging ? "opacity-50" : "hover:shadow-md"
+      className={`card-modern flex cursor-pointer flex-col gap-2.5 rounded-2xl p-3.5 ${
+        isDragging ? "opacity-50" : ""
       }`}
     >
       <div className="flex items-start justify-between gap-2">
@@ -35,7 +35,7 @@ export function ApplicationCardContent({
           onPointerDown={(event) => event.stopPropagation()}
           className="min-w-0 cursor-pointer"
         >
-          <h3 className="truncate text-sm font-bold text-foreground hover:text-primary-600">
+          <h3 className="truncate text-sm font-bold text-foreground transition-colors hover:text-primary-600">
             {application.title}
           </h3>
           <p className="truncate text-xs font-medium text-foreground/60">
